@@ -44,49 +44,29 @@ const siderPaddingTop = computed(() => {
 <template>
   <MenuLayout class="menu-layout" :class="{ isSmallScreen: styleStore.isSmallScreen }">
     <template #sider>
-      <RouterLink to="/" class="hero-wrapper">
-        <HeroGradient class="gradient" />
-        <div class="text-wrapper">
-          <div class="title">
-            <a href="https://fengcblog.880200.xyz" target="_blank">
-              <img src="https://fengc-img.880200.xyz/api/rfile/logo.png" width="70" alt="logo" />
-            </a>
-            <br />IT - TOOLS
-          </div>
-          <div class="divider" />
-          <div class="subtitle">
-            {{ $t('home.subtitle') }}
-          </div>
-        </div>
-      </RouterLink>
-
-      <div class="sider-content" :style="{ paddingTop: siderPaddingTop }">
-        <div v-if="styleStore.isSmallScreen" flex flex-col items-center>
-          <locale-selector w="90%" />
-
-          <div flex justify-center>
-            <NavbarButtons />
-          </div>
-        </div>
-
-        <CollapsibleToolMenu :tools-by-category="tools" />
-
-        <div class="footer">
-          <div>
-            IT-Tools 2026 Provide by 
-            <a href="https://fengcblog.880200.xyz" target="_blank" class="footer-link">
-               fengc's Blog
-            </a>
-          </div>
-          <br><br><br>
-                    
-          <div class="ad-container">
-            <AdSidebar />
-          </div>
-        </div>
+  <div class="hero-wrapper">
+    <HeroGradient class="gradient" />
+    <div class="text-wrapper">
+      <div class="title">
+        <!-- Logo：点击打开博客 -->
+        <a href="https://fengcblog.880200.xyz" target="_blank">
+          <img src="https://fengc-img.880200.xyz/api/rfile/logo.png" width="100" alt="logo" />
+        </a>
+        <br />
+        <!-- 标题文字：点击回到工具首页 -->
+        <RouterLink to="/" style="color: #fff; text-decoration: none;">
+          IT - TOOLS
+        </RouterLink>
       </div>
-    </template>
+      <div class="divider" />
+      <div class="subtitle">
+        {{ $t('home.subtitle') }}
+      </div>
+    </div>
+  </div>
+</template>
 
+    
 <template #content>
   <div flex items-center justify-center gap-2>
     <!-- 菜单切换按钮 -->
