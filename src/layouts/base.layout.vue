@@ -87,8 +87,55 @@ const siderPaddingTop = computed(() => {
     </template>
 
 <template #content>
-  <div flex items-center justify-end gap-2>
+  <div flex items-center justify-center gap-2>
+    <!-- 菜单切换按钮 -->
+    <c-button
+      circle
+      variant="text"
+      :aria-label="$t('home.toggleMenu')"
+      @click="styleStore.isMenuCollapsed = !styleStore.isMenuCollapsed"
+    >
+      <NIcon size="25" :component="Menu2" />
+    </c-button>
+
+    <!-- 首页按钮 -->
+    <c-tooltip :tooltip="$t('home.home')" position="bottom">
+      <c-button to="/" circle variant="text" :aria-label="$t('home.home')">
+        <NIcon size="25" :component="Home2" />
+      </c-button>
+    </c-tooltip>
+
+    <!-- 开发工具按钮（保留） -->
+    <c-tooltip :tooltip="$t('home.uiLib')" position="bottom">
+      <c-button v-if="config.app.env === 'development'" to="/c-lib" circle variant="text" :aria-label="$t('home.uiLib')">
+        <icon-mdi:brush-variant text-20px />
+      </c-button>
+    </c-tooltip>
+
+    <!-- 搜索框/命令面板（保留） -->
+    <command-palette />
+
+    <!-- 语言选择器（保留） -->
     <locale-selector v-if="!styleStore.isSmallScreen" />
+
+    <!-- 暗黑模式切换（从 NavbarButtons 提取出来单独添加） -->
+    <c-tooltip 
+      :tooltip="styleStore.isDarkTheme ? $t('home.lightMode') : $t('home.darkMode')" 
+      position="bottom"
+    >
+      <c-button
+        circle
+        variant="text"
+        :aria-label="styleStore.isDarkTheme ? $t('home.lightMode') : $t('home.darkMode')"
+        @click="styleStore.isDarkTheme = !styleStore.isDarkTheme"
+      >
+        <NIcon size="22">
+          <span v-if="styleStore.isDarkTheme">☀️</span>
+          <span v-else>🌙</span>
+        </NIcon>
+      </c-button>
+    </c-tooltip>
+
   </div>
   <slot />
 </template>
