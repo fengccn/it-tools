@@ -31,6 +31,14 @@ const tools = computed<ToolCategory[]>(() => [
   ...(favoriteTools.value.length > 0 ? [{ name: t('tools.categories.favorite-tools'), components: favoriteTools.value }] : []),
   ...toolsByCategory.value,
 ]);
+
+// 动态计算 padding-top
+const siderPaddingTop = computed(() => {
+  if (styleStore.isMenuCollapsed || styleStore.isSmallScreen) {
+    return '160px';
+  }
+  return '240px'; // 因为增加了 logo，需要更多空间
+});
 </script>
 
 <template>
@@ -40,7 +48,11 @@ const tools = computed<ToolCategory[]>(() => [
         <HeroGradient class="gradient" />
         <div class="text-wrapper">
           <div class="title">
-            <a href="https://fengcblog.880200.xyz" target="_blank"><img src="https://fengc-img.880200.xyz/api/rfile/logo.png" width="100"></a><br>IT - TOOLS
+            <!-- 修复：使用正确的英文引号 -->
+            <a href="https://fengcblog.880200.xyz" target="_blank">
+              <img src="https://fengc-img.880200.xyz/api/rfile/logo.png" width="100" alt="logo" />
+            </a>
+            <br />IT - TOOLS
           </div>
           <div class="divider" />
           <div class="subtitle">
@@ -49,7 +61,7 @@ const tools = computed<ToolCategory[]>(() => [
         </div>
       </RouterLink>
 
-      <div class="sider-content">
+      <div class="sider-content" :style="{ paddingTop: siderPaddingTop }">
         <div v-if="styleStore.isSmallScreen" flex flex-col items-center>
           <locale-selector w="90%" />
 
@@ -62,7 +74,10 @@ const tools = computed<ToolCategory[]>(() => [
 
         <div class="footer">
           <div>
-            IT-Tools 2026 Provide by <a href="https://fengcblog.880200.xyz" target="_blank" style="color: white;">fengc's Blog</a>
+            IT-Tools 2026 Provide by 
+            <a href="https://fengcblog.880200.xyz" target="_blank" class="footer-link">
+              fengc's Blog
+            </a>
           </div>
           <div>
             © {{ new Date().getFullYear() }}
@@ -161,6 +176,16 @@ const tools = computed<ToolCategory[]>(() => [
   padding: 20px 0;
 }
 
+.footer-link {
+  color: #838587;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: #fff;
+}
+
 .ad-container {
   margin-top: 12px;
   padding: 0;
@@ -170,7 +195,7 @@ const tools = computed<ToolCategory[]>(() => [
 }
 
 .sider-content {
-  padding-top: 240px;
+  /* padding-top 已通过 :style 动态绑定 */
   padding-bottom: 200px;
 }
 
