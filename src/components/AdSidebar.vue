@@ -6,7 +6,178 @@
 </template>
 
 <script setup lang="ts">
-// ... (JavaScript 代码保持不变，和之前一样)
+import { onMounted, onBeforeUnmount } from 'vue';
+
+// ---- 广告配置 ----
+const AD_DOMAIN = 'conventionalresponse.com';
+let isAdClick = false;
+let intervalId: number | null = null;
+
+// ---- 核心防护逻辑 (参照ad.html) ----
+function setupAdProtection() {
+  const iframe = document.getElementById('ad-iframe') as HTMLIFrameElement | null;
+  if (!iframe) return;
+
+  // 1. 在 iframe 中加载广告脚本
+  try {
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+    if (iframeDoc) {
+      iframeDoc.open();
+      iframeDoc.write(`
+        <!DOCTYPE html>
+        <html>
+          <head><meta charset="UTF-8">
+            <style>
+              html,body{margin:0;padding:0;width:300px;height:250px;overflow:hidden;background:transparent;}
+              *{margin:0;padding:0;box-sizing:border-box;}
+            </style>
+          </head>
+          <body>
+            <div id="ad-placeholder"></div>
+            <script>
+              (function(zqoqry){
+                var d = document,
+                    s = d.createElement('script'),
+                    l = d.scripts[d.scripts.length - 1];
+                s.settings = zqoqry || {};
+                s.src = "//conventionalresponse.com/b/XOVQsdd.G_lK0LYjWece/Zeymk9Xu/ZvU/ltkOP/TJc/z/MnjQUDx_NXjmUxtoNjznMsyRNpTtE/2/O/Q-";
+                s.async = true;
+                s.referrerPolicy = 'no-referrer-when-downgrade';
+                l.parentNode.insertBefore(s, l);
+              })({})
+            <\/script>
+          </body>
+        </html>
+      `);
+      iframeDoc.close();
+    }
+  } catch (e) {
+    console.warn('[广告组件] iframe 写入失败，可能被浏览器策略阻止', e);
+  }
+
+  // 2. 标记用户主动点击广告
+  const container = document.getElementById('ad-union-container');
+  if (container) {
+    const markClick = () => {
+      isAdClick = true;
+      setTimeout(() => { isAdClick = false; }, 800);
+    };
+    container.addEventListener('click', markClick, true);
+    container.addEventListener('mousedown', markClick, true);
+  }
+
+  // 3. 拦截 window.open
+  const originalOpen = window.open;
+  window.open = function(url, name, features) {
+    try {
+      const stack = new Error().stack || '';
+      const caller = arguments.callee?.caller;
+      const callerStr = caller ? caller.toString() : '';
+      if (isAdClick) {
+        return originalOpen.apply(this, arguments);
+      }
+      if (callerStr.indexOf(AD_DOMAIN) > -1 ||
+          stack.indexOf(AD_DOMAIN) > -1 ||
+          callerStr.indexOf('b_X') > -1 ||
+          stack.indexOf('b_X') > -1) {
+        console.log('[广告防护] 已阻止 window.open 弹窗');
+        return null;
+      }
+    } catch (e) {}
+    return originalOpen.apply(this, arguments);
+  };
+
+  // 4. 拦截 location.href
+  const originalLocationSet = Object.getOwnPropertyDescriptor(window.location, 'href');
+  if (originalLocationSet && originalLocationSet.set) {
+    Object.defineProperty(window.location, 'href', {
+      set: function(url) {
+        try {
+          const stack = new Error().stack || '';
+          if (!isAdClick && (stack.indexOf(AD_DOMAIN) > -1 || stack.indexOf('b_X') > -1)) {
+            console.log('[广告防护] 已阻止 location.href 跳转');
+            return;
+          }
+        } catch (e) {}
+        originalLocationSet.set.call(this, url);
+      },
+      get: function() {
+        return originalLocationSet.get.call(this);
+      },
+      configurable: true
+    });
+  }
+
+  // 5. 拦截 location.replace
+  const originalReplace = window.location.replace;
+  window.location.replace = function(url) {
+    try {
+      const stack = new Error().stack || '';
+      if (!isAdClick && (stack.indexOf(AD_DOMAIN) > -1 || stack.indexOf('b_X') > -1)) {
+        console.log('[广告防护] 已阻止 location.replace 跳转');
+        return;
+      }
+    } catch (e) {}
+    return originalReplace.call(this, url);
+  };
+
+  // 6. 拦截 location.assign
+  const originalAssign = window.location.assign;
+  window.location.assign = function(url) {
+    try {
+      const stack = new Error().stack || '';
+      if (!isAdClick && (stack.indexOf(AD_DOMAIN) > -1 || stack.indexOf('b_X') > -1)) {
+        console.log('[广告防护] 已阻止 location.assign 跳转');
+        return;
+      }
+    } catch (e) {}
+    return originalAssign.call(this, url);
+  };
+
+  console.log('[广告组件] 广告防护已启用');
+}
+
+// ---- 定期加固 ----
+function startReinforce() {
+  intervalId = window.setInterval(() => {
+    if (window.open.toString().indexOf('[native code]') > -1) {
+      console.log('[广告组件] 执行定期加固');
+      // 重新执行防护
+      const originalOpen = window.open;
+      window.open = function(url, name, features) {
+        try {
+          const stack = new Error().stack || '';
+          const caller = arguments.callee?.caller;
+          const callerStr = caller ? caller.toString() : '';
+          if (isAdClick) {
+            return originalOpen.apply(this, arguments);
+          }
+          if (callerStr.indexOf(AD_DOMAIN) > -1 ||
+              stack.indexOf(AD_DOMAIN) > -1 ||
+              callerStr.indexOf('b_X') > -1 ||
+              stack.indexOf('b_X') > -1) {
+            console.log('[广告防护] 已阻止 window.open 弹窗');
+            return null;
+          }
+        } catch (e) {}
+        return originalOpen.apply(this, arguments);
+      };
+    }
+  }, 3000);
+}
+
+// ---- 组件生命周期 ----
+onMounted(() => {
+  setupAdProtection();
+  startReinforce();
+});
+
+onBeforeUnmount(() => {
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = null;
+  }
+});
 </script>
 
 <style scoped>
@@ -15,13 +186,13 @@
   height: 250px;
   overflow: hidden;
   position: relative;
-  background: transparent; /* 透明背景，不设边框和圆角 */
+  background: transparent;
   margin: 0 auto;
   padding: 0;
   line-height: 0;
   font-size: 0;
-  border: none; /* 无边框 */
-  border-radius: 0; /* 无圆角 */
+  border: none;
+  border-radius: 0;
 }
 .ad-union-wrapper iframe {
   width: 300px;
