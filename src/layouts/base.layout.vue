@@ -75,10 +75,10 @@ const siderPaddingTop = computed(() => {
           <div>
             IT-Tools 2026 Provide by 
             <a href="https://fengcblog.880200.xyz" target="_blank" class="footer-link">
-              fengc's Blog
+               fengc's Blog
             </a>
           </div>
-          <br>
+          <br><br><br>
                     
           <div class="ad-container">
             <AdSidebar />
@@ -183,9 +183,14 @@ const siderPaddingTop = computed(() => {
 }
 
 .footer-link:hover {
-  color: #333333;
+  color: #1a1a1a; /* 默认深黑色 */
 }
 
+/* 暗黑模式下悬停时变为白色 */
+[data-theme="dark"] .footer-link:hover {
+  color: #ffffff;
+}
+  
 .ad-container {
   margin-top: 12px;
   padding: 0;
