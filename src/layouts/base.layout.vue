@@ -62,7 +62,7 @@ const tools = computed<ToolCategory[]>(() => [
 
         <div class="footer">
           <div>
-            IT-Tools 2026 Provide by <a href="https://fengcblog.880200.xyz" target="_blank">fengc's Blog</a>
+            IT-Tools 2026 Provide by <a href="https://fengcblog.880200.xyz" target="_blank" style="color: white;">fengc's Blog</a>
           </div>
           <div>
             © {{ new Date().getFullYear() }}
