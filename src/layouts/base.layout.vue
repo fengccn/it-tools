@@ -40,7 +40,7 @@ const tools = computed<ToolCategory[]>(() => [
         <HeroGradient class="gradient" />
         <div class="text-wrapper">
           <div class="title">
-            IT - TOOLS
+            <a href="https://fengcblog.880200.xyz target="_blank"><img src="https://fengc-img.880200.xyz/api/rfile/logo.png" width="100"></a><br>IT - TOOLS
           </div>
           <div class="divider" />
           <div class="subtitle">
