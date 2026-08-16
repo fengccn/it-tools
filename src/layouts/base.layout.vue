@@ -186,7 +186,7 @@ const tools = computed<ToolCategory[]>(() => [
 }
 
 .sider-content {
-  padding-top: 180px;
+  padding-top: 240px;
   padding-bottom: 200px;
 }
 
