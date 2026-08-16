@@ -92,11 +92,9 @@ const siderPaddingTop = computed(() => {
         <div class="footer">
           <div>
             IT-Tools 2026 Provide by 
-            <a href="https://fengcblog.880200.xyz" target="_blank" class="footer-link">
-              fengc's Blog
-            </a>
+            <a href="https://fengcblog.880200.xyz" target="_blank" class="footer-link"> fengc's Blog </a>
           </div>
-          
+          <br><br><br>
           <div class="ad-container">
             <AdSidebar />
           </div>
