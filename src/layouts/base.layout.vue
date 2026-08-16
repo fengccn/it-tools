@@ -49,7 +49,7 @@ const siderPaddingTop = computed(() => {
         <div class="text-wrapper">
           <div class="title">
             <a href="https://fengcblog.880200.xyz" target="_blank">
-              <img src="https://fengc-img.880200.xyz/api/rfile/logo.png" width="100" alt="logo" />
+              <img src="https://fengc-img.880200.xyz/api/rfile/logo.png" width="70" alt="logo" />
             </a>
             <br />IT - TOOLS
           </div>
