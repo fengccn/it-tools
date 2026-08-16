@@ -183,7 +183,7 @@ const siderPaddingTop = computed(() => {
 }
 
 .footer-link:hover {
-  color: #fff;
+  color: #333333;
 }
 
 .ad-container {
