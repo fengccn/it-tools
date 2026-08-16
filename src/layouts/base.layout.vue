@@ -14,7 +14,7 @@ import type { ToolCategory } from '@/tools/tools.types';
 import { useToolStore } from '@/tools/tools.store';
 import { useTracker } from '@/modules/tracker/tracker.services';
 import CollapsibleToolMenu from '@/components/CollapsibleToolMenu.vue';
-import AdSidebar from '@/components/AdSidebar.vue'; // 导入广告组件
+import AdSidebar from '@/components/AdSidebar.vue';
 
 const themeVars = useThemeVars();
 const styleStore = useStyleStore();
@@ -87,7 +87,6 @@ const tools = computed<ToolCategory[]>(() => [
             </c-link>
           </div>
           
-          <!-- 在版权信息下方插入广告 -->
           <div class="ad-container">
             <AdSidebar />
           </div>
@@ -178,7 +177,6 @@ const tools = computed<ToolCategory[]>(() => [
   padding: 20px 0;
 }
 
-/* 广告容器样式 - 无边框无圆角 */
 .ad-container {
   margin-top: 12px;
   padding: 0;
