@@ -4,7 +4,6 @@ import { NGlobalStyle, NMessageProvider, NNotificationProvider, darkTheme } from
 import { darkThemeOverrides, lightThemeOverrides } from './themes';
 import { layouts } from './layouts';
 import { useStyleStore } from './stores/style.store';
-import AdSidebar from './components/AdSidebar.vue'; // 导入广告组件
 
 const route = useRoute();
 const layout = computed(() => route?.meta?.layout ?? layouts.base);
