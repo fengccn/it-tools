@@ -183,7 +183,7 @@ const siderPaddingTop = computed(() => {
 }
 
 .footer-link:hover {
-  color: #1a1a1a; /* 默认深黑色 */
+  color: #000000; /* 默认深黑色 */
 }
 
 /* 暗黑模式下悬停时变为白色 */
