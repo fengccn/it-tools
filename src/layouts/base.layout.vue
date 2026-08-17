@@ -50,7 +50,7 @@ const siderPaddingTop = computed(() => {
           <div class="title">
             <!-- Logo：点击打开博客 -->
             <a href="https://fengcblog.880200.xyz" target="_blank">
-              <img src="https://fengc-img.880200.xyz/api/rfile/logo.png" width="100" alt="logo" />
+              <img src="https://fengc-img.880200.xyz/api/rfile/logo.png" width="70" alt="logo" />
             </a>
             <br />
             <!-- 标题文字：点击回到工具首页 -->
